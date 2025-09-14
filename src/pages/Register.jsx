@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -101,16 +101,7 @@ const Register = () => {
             // unda emailni tasdiqlash uchun alohida request kerak bo'ladi.
             // Endi modalni ochamiz va tasdiqlash usulini tanlashni so'raymiz.
             setLoading(false)
-            // setShowModal(true);
-            setFormData({
-                passport: '',
-                firstName: '',
-                lastName: '',
-                email: '',
-                phone: '',
-                password: '',
-                passportImage: null,
-            })
+            setShowModal(true);
         } catch (err) {
             setError(err.response?.data?.error || 'Server xatosi ro‘y berdi');
             toast.error(err.response?.data?.error || 'Server xatosi ro‘y berdi');
@@ -125,7 +116,7 @@ const Register = () => {
         try {
             // Backendga yuborilayotgan ma'lumotlar: { code: verificationCode }
             // Va Authorization header orqali login tokeni
-            const response = await axios.post('http://localhost:5000/api/auth/verify-email', { // Endpointni o'zgartirdik
+            const response = await axios.post('/api/auth/verify-email', { // Endpointni o'zgartirdik
                 code: verificationCode,
                 email: formData.email,
             }, {
@@ -137,9 +128,20 @@ const Register = () => {
             if (response.data.success) {
                 toast.success(response.data.message);
                 setShowModal(false);
+                setFormData({
+                    passport: '',
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone: '',
+                    password: '',
+                    passportImage: null,
+                })
                 navigate('/login'); // Tasdiqlashdan keyin login sahifasiga o'tkazish
+
             } else {
                 setError(response.data.error || 'Tasdiqlashda xatolik yuz berdi.');
+                setLoading(false)
                 toast.error(response.data.error || 'Tasdiqlashda xatolik yuz berdi.');
             }
         } catch (err) {
@@ -164,6 +166,7 @@ const Register = () => {
             if (response.data.success) {
                 toast.success(response.data.message);
                 setShowModal(false);
+                setLoading(false)
                 navigate('/login'); // Tasdiqlashdan keyin login sahifasiga o'tkazish
             } else {
                 setError(response.data.error || 'Tasdiqlashda xatolik yuz berdi.');
@@ -172,6 +175,7 @@ const Register = () => {
         } catch (err) {
             const errorMessage = err.response?.data?.error || err.response?.data?.message || 'Tasdiqlash kodi noto\'g\'ri yoki eskirgan.';
             setError(errorMessage);
+            setLoading(false)
             toast.error(errorMessage);
         }
     };

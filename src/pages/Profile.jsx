@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useUserAuth } from "../contexts/UserAuthContext";
 import { toast } from "react-toastify";
 import axios from "axios";
+import Modal from "../components/Modal";
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -11,7 +12,17 @@ const Profile = () => {
   const [orders, setOrders] = useState([]);
   const [sortKey, setSortKey] = useState("date");
   const [showPassport, setShowPassport] = useState(false);
-  const [expandedOrderId, setExpandedOrderId] = useState(null); // Для аккордеона
+  const [expandedOrderId, setExpandedOrderId] = useState(null);
+  const [verificationMethod, setVerificationMethod] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [authToken, setAuthToken] = useState();
+  const [verificationCode, setVerificationCode] = useState("");
+
+  useEffect(() => {
+    if(!user.isPhoneVerified && !user.isEmailVerified){
+      setAuthToken(localStorage.getItem("token"));
+    }
+  }, []);
 
   const [passwordData, setPasswordData] = useState({
     current: "",
@@ -35,10 +46,14 @@ const Profile = () => {
       }
     };
 
-    if (user) fetchOrders();
+    if (user) {
+      fetchOrders();
+      if (!user.isEmailVerified || !user.isPhoneVerified) {
+        setShowModal(true);
+      }
+    }
   }, [user, loading, navigate]);
 
-  // Смена пароля
   const handleChangePassword = async () => {
     if (passwordData.newPass !== passwordData.confirm) {
       toast.error("❌ Пароли не совпадают!");
@@ -80,6 +95,128 @@ const Profile = () => {
     return 0;
   });
 
+  const handleEmailVerification = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "/api/auth/verify-email",
+        {
+          code: verificationCode,
+          email: user.email,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setShowModal(false);
+        window.location.reload()
+        setVerificationCode("");
+        // Обновление состояния пользователя для отображения галочки
+        // Это простой способ, но лучше было бы сделать re-fetch данных пользователя
+        // user.isEmailVerified = true;
+        // console.log(user)
+      } else {
+        toast.error(response.data.error || "Tasdiqlashda xatolik yuz berdi.");
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        "Tasdiqlash kodi noto'g'ri yoki eskirgan.";
+      toast.error(errorMessage);
+    }
+  };
+
+  const handlePhoneVerification = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/auth/verify-phone",
+        {
+          code: verificationCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${authToken}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        toast.success(response.data.message);
+        setShowModal(false);
+        setVerificationCode("");
+        window.location.reload()
+        // Обновление состояния пользователя
+        // user.isPhoneVerified = true;
+      } else {
+        toast.error(response.data.error || "Tasdiqlashda xatolik yuz berdi.");
+      }
+    } catch (err) {
+      const errorMessage =
+        err.response?.data?.error ||
+        err.response?.data?.message ||
+        "Tasdiqlash kodi noto'g'ri yoki eskirgan.";
+      toast.error(errorMessage);
+    }
+  };
+
+  const handleSelectEmail = () => {
+    setVerificationMethod("email");
+    resendEmailCode();
+  };
+
+  const handleSelectPhone = () => {
+    setVerificationMethod("phone");
+    resendPhoneCode();
+  };
+
+  const resendEmailCode = async () => {
+    try {
+      const authToken = localStorage.getItem("token");
+      const res = await axios.post(
+        "/api/auth/resend-email-code",
+        {}, // Пустое тело запроса, email берется из токена
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      if (res.data.success) {
+        toast.success("✅ Код повторно отправлен на почту!");
+      } else {
+        toast.error(res.data.error || "❌ Ошибка при отправке кода на почту");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.error || "❌ Не удалось отправить код");
+    }
+  };
+
+  const resendPhoneCode = async () => {
+    try {
+      const authToken = localStorage.getItem("token");
+      const res = await axios.post(
+        "/api/auth/resend-phone-code",
+        {}, // Пустое тело запроса, phone берется из токена
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+
+      if (res.data.success) {
+        toast.success("✅ Код повторно отправлен на телефон!");
+      } else {
+        toast.error(res.data.error || "❌ Ошибка при отправке кода на телефон");
+      }
+    } catch (err) {
+      toast.error(err.response?.data?.error || "❌ Не удалось отправить код");
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center h-screen text-gray-600">
@@ -87,8 +224,6 @@ const Profile = () => {
       </div>
     );
   }
-  console.log(orders);
-  
 
   return (
     <div className="min-h-screen bg-gray-100 py-6 px-4 sm:px-6 lg:px-8">
@@ -114,15 +249,38 @@ const Profile = () => {
             </h3>
             <div className="grid gap-3 sm:grid-cols-2">
               <p>
-                <strong>ФИО:</strong>{" "}
-                {user.firstName + " " + user.lastName || "—"}
+                <strong>ФИО:</strong> {user.firstName + " " + user.lastName || "—"}
               </p>
-              <p>
+              <div className="flex items-center space-x-2">
                 <strong>Email:</strong> {user.email || "—"}
-              </p>
-              <p>
+                {user.isEmailVerified ? (
+                  <span className="text-green-500">✅</span>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                    className="ml-2 text-blue-500 underline"
+                  >
+                    Подтвердить
+                  </button>
+                )}
+              </div>
+              <div className="flex items-center space-x-2">
                 <strong>Телефон:</strong> {user.phone || "—"}
-              </p>
+                {user.isPhoneVerified ? (
+                  <span className="text-green-500">✅</span>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowModal(true);
+                    }}
+                    className="ml-2 text-blue-500 underline"
+                  >
+                    Подтвердить
+                  </button>
+                )}
+              </div>
               <p>
                 <strong>Паспорт:</strong> {maskPassport(user.passport)}
                 <button
@@ -222,9 +380,8 @@ const Profile = () => {
                         📌 Доставка:{" "}
                         {order.deliveryMethod === "pickup"
                           ? "Самовывоз"
-                          : `${order.deliveryMethod} (${
-                              order.deliveryVehicle || "-"
-                            })`}
+                          : `${order.deliveryMethod} (${order.deliveryVehicle || "-"
+                          })`}
                       </p>
                     </div>
                     <span className="text-blue-500">
@@ -262,6 +419,100 @@ const Profile = () => {
             </ul>
           )}
         </div>
+
+        {showModal && (
+          <Modal onClose={() => setShowModal(false)}>
+            <div className="flex flex-col items-center p-6 space-y-4">
+              <h3 className="text-xl font-bold text-gray-800">
+                Tasdiqlash usulini tanlang
+              </h3>
+              {verificationMethod === "phone" ? (
+                <form
+                  onSubmit={handlePhoneVerification}
+                  className="w-full flex flex-col items-center space-y-4"
+                >
+                  <p className="text-gray-600 text-center">
+                    Telefon raqamingizga yuborilgan kodni kiriting.
+                  </p>
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    placeholder="Tasdiqlash kodi"
+                    className="w-full p-2 border rounded-md"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700"
+                  >
+                    Tasdiqlash
+                  </button>
+                  <button
+                    type="button"
+                    onClick={resendPhoneCode}
+                    className="text-sm text-blue-500 underline mt-2"
+                  >
+                    Kodni qayta yuborish
+                  </button>
+                </form>
+              ) : verificationMethod === "email" ? (
+                <form
+                  onSubmit={handleEmailVerification}
+                  className="w-full flex flex-col items-center space-y-4"
+                >
+                  <p className="text-gray-600 text-center">
+                    Emailingizga yuborilgan kodni kiriting.
+                  </p>
+                  <input
+                    type="text"
+                    value={verificationCode}
+                    onChange={(e) => setVerificationCode(e.target.value)}
+                    placeholder="Tasdiqlash kodi"
+                    className="w-full p-2 border rounded-md"
+                    required
+                  />
+                  <button
+                    type="submit"
+                    className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700"
+                  >
+                    Tasdiqlash
+                  </button>
+                  <button
+                    type="button"
+                    onClick={resendEmailCode}
+                    className="text-sm text-blue-500 underline mt-2"
+                  >
+                    Kodni qayta yuborish
+                  </button>
+                </form>
+              ) : (
+                <>
+                  <p className="text-gray-600 text-center">
+                    Ro‘yxatdan o‘tishni yakunlash uchun, iltimos, tanlangan usul
+                    orqali tasdiqlang.
+                  </p>
+                  <div className="w-full space-y-2">
+                      <button
+                        onClick={handleSelectEmail} 
+                        className={`w-full  text-white py-2 rounded-md ${user.isEmailVerified ? "bg-gray-300" : "bg-blue-500 hover:bg-blue-600"}`}
+                        disabled={user?.isEmailVerified}
+                      >
+                        Email orqali tasdiqlash
+                      </button>
+                      <button
+                        onClick={handleSelectPhone}
+                        className={`w-full  text-white py-2 rounded-md  ${user.isPhoneVerified ? "bg-gray-500" : "bg-green-500 hover:bg-green-600"}`}
+                        disabled={user?.isPhoneVerified}
+                      >
+                        Telefon orqali tasdiqlash
+                      </button>
+                  </div>
+                </>
+              )}
+            </div>
+          </Modal>
+        )}
       </div>
     </div>
   );
