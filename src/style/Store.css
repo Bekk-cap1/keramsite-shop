@@ -1,0 +1,115 @@
+  /* Store Container */
+  .store-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+    /* background-color: #ffefd5; Misol uchun */
+    border-radius: 0.5rem;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    color: var(--brown);
+  }
+
+  .store-title {
+    text-align: center;
+    color: var(--brown);
+    margin-bottom: 1.5rem;
+    font-size: 2rem;
+  }
+
+  /* Filter Buttons */
+  .store-filter-container {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .store-filter-button {
+    background-color: var(--beige);
+    color: var(--brown);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+
+  .store-filter-button:hover {
+    background-color: var(--brown);
+    color: var(--cream);
+  }
+
+  .store-filter-button-active {
+    background-color: var(--brown);
+    color: var(--cream);
+  }
+
+  /* Products Grid */
+  .store-products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .store-product-card {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: 0.2s ease-in-out all;
+    width: 350px;
+  }
+  .store-product-card:hover{
+    transform: scale(1.02);
+  }
+
+  .store-product-name {
+    font-size: 1.5rem;
+    color: var(--brown);
+    margin-bottom: 0.5rem;
+  }
+
+  .store-product-image{
+    width: auto;
+    height: 180px;
+  }
+
+  .store-product-details {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 0.3rem;
+  }
+
+  .store-product-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--brown);
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .store-add-button {
+    background-color: var(--beige);
+    color: var(--brown);
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    align-self: center; /* Center the button */
+    width: 100%;
+    max-width: 200px;
+  }
+
+  .store-add-button:hover {
+    background-color: var(--cream);
+    color: var(--brown);
+  }

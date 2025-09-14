@@ -1,0 +1,50 @@
+.product-card {
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  width: 200px; /* Rasmga mos kenglik */
+  text-align: center;
+  transition: box-shadow 0.3s ease;
+}
+
+.product-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.product-card h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1a202c;
+  margin-bottom: 0.5rem;
+}
+
+.product-card p {
+  font-size: 0.875rem;
+  color: #4a5568;
+  margin: 0.25rem 0;
+}
+
+.product-card .price {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #1a202c;
+  margin-top: 0.5rem;
+}
+
+.product-card button {
+  margin-top: 1rem;
+  width: 100%;
+  background-color: #3b82f6;
+  color: #ffffff;
+  padding: 0.5rem;
+  border-radius: 0.25rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.product-card button:hover {
+  background-color: #2563eb;
+}

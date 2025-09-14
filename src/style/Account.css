@@ -1,0 +1,135 @@
+.account-container {
+  padding: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.account-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4D3F29;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: fadeIn 1s ease-in-out;
+}
+
+.account-no-orders {
+  padding: 1.5rem;
+  font-size: 1.2rem;
+  color: #4D3F29;
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.account-orders-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.account-order-card {
+  background-color: #fff;
+  border: 2px solid #C49A6C;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.account-order-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+}
+
+.account-order-detail {
+  font-size: 1.1rem;
+  color: #4D3F29;
+  line-height: 1.5;
+}
+
+.account-order-detail strong {
+  color: #C49A6C;
+  font-weight: 600;
+  margin-right: 0.5rem;
+}
+
+.account-order-status {
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
+  font-weight: 500;
+  display: inline-block;
+}
+
+.account-status-paid {
+  background-color: #2ecc71;
+  color: #fff;
+}
+
+.account-status-pending {
+  background-color: #f1c40f;
+  color: #fff;
+}
+
+.account-status-unknown {
+  background-color: #7f8c8d;
+  color: #fff;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Moslashuvchan dizayn */
+@media (max-width: 768px) {
+  .account-container {
+    padding: 1rem;
+  }
+
+  .account-title {
+    font-size: 2rem;
+  }
+
+  .account-order-card {
+    padding: 1rem;
+  }
+
+  .account-order-detail {
+    font-size: 1rem;
+  }
+
+  .account-no-orders {
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .account-title {
+    font-size: 1.8rem;
+  }
+
+  .account-order-card {
+    padding: 0.8rem;
+  }
+
+  .account-order-detail {
+    font-size: 0.95rem;
+  }
+
+  .account-no-orders {
+    font-size: 1rem;
+  }
+}

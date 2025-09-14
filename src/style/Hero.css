@@ -1,0 +1,116 @@
+.hero {
+  height: 100vh;
+  background-image: url('../img/Hero.jpg'); /* Tasvir yo'lini o'zgartiring */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 2rem;
+}
+
+.hero-text {
+  text-align: left;
+}
+
+.hero-subtitle {
+  color: #8B6F47;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title {
+  color: #4D3F29;
+  font-size: 3.5rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+
+.hero-subtitle:nth-child(3) {
+  color: #4D3F29;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.hero-line {
+  width: 50px;
+  height: 2px;
+  background-color: #4D3F29;
+  margin: 1rem 0;
+}
+
+.hero-description {
+  color: #ffffff;
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  max-width: 400px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.hero-button {
+  background-color: #C49A6C;
+  color: #4D3F29;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-button:hover {
+  background-color: #FFF3D1;
+}
+
+.hero-social {
+  position: absolute;
+  right: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hero-social-icon {
+  color: #6B7280;
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.hero-social-icon:hover {
+  color: #4D3F29;
+}
+
+@media (max-width: 768px) {
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
+  }
+  .hero-social {
+    position: static;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 1rem;
+  }
+  .hero-title {
+    font-size: 2.5rem;
+  }
+  .hero-subtitle:nth-child(3) {
+    font-size: 1.5rem;
+  }
+}

@@ -1,0 +1,111 @@
+.bg-brown {
+  background-color: #4D3F29;
+}
+
+.text-beige {
+  color: #C49A6C;
+}
+
+.hover\:text-cream:hover {
+  color: #FFF3D1;
+}
+
+.container {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+footer {
+  border-top: 2px solid #C49A6C;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  margin-top: 3rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+footer.animate-fade-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+footer .flex-col {
+  flex-direction: column;
+}
+
+footer .flex-row {
+  flex-direction: row;
+}
+
+footer a {
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.3s ease;
+}
+
+footer a::after {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 0;
+  background-color: #FFF3D1;
+  transition: width 0.3s ease-in-out;
+}
+
+footer a:hover::after {
+  width: 100%;
+}
+
+footer i {
+  font-size: 1.25rem;
+  color: #C49A6C;
+  transition: transform 0.3s ease-in-out;
+}
+
+footer a:hover i {
+  transform: scale(1.2);
+}
+
+.footer-logo {
+  transition: transform 0.5s ease-in-out;
+}
+
+.footer-logo:hover {
+  transform: scale(1.05);
+}
+
+.footer-links a {
+  transition: transform 0.3s ease-in-out;
+}
+
+.footer-links a:hover {
+  transform: translateX(5px);
+}
+
+.footer-text {
+  transition: opacity 0.5s ease-in-out;
+}
+
+.footer-text:hover {
+  opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+  footer .flex-col {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer .gap-4 {
+    gap: 1rem;
+  }
+}

@@ -1,0 +1,173 @@
+.about-section {
+  width: 100%;
+  padding: 60px 0;
+  background-color: #ffffff; /* Oq fon */
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(50px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.about-section.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.about-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex-wrap: wrap;
+}
+
+.about-image {
+  flex: 1;
+  max-width: 400px;
+  transition: transform 0.5s ease-in-out;
+}
+
+.about-image:hover .tech-image {
+  transform: scale(1.05);
+}
+
+.tech-image {
+  width: 100%;
+  height: auto;
+  border-radius: 10px;
+  /* box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); */
+  transition: transform 0.5s ease-in-out;
+}
+
+.about-content {
+  flex: 1;
+  text-align: left;
+  max-width: 600px;
+}
+
+.about-title {
+  font-size: 32px;
+  color: #333;
+  font-weight: 700;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateX(-20px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.about-title.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.about-desc {
+  font-size: 16px;
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+}
+
+.about-desc.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.skill-bar {
+  margin-top: 20px;
+}
+
+.skill {
+  margin-bottom: 15px;
+}
+
+.skill-label {
+  font-size: 16px;
+  color: #333;
+  display: block;
+  margin-bottom: 5px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+
+.skill-label.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.bar {
+  width: 100%;
+  background-color: #f5f5f5; /* Engil kulrang fon */
+  border-radius: 5px;
+  height: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.progress {
+  height: 100%;
+  background-color: #8b6f47; /* Jigarrang progress bar */
+  border-radius: 5px;
+  width: 0;
+  transition: width 1.5s ease-in-out;
+}
+
+.progress.visible {
+  width: 100%; /* Animatsiya uchun placeholder */
+}
+
+@media (max-width: 768px) {
+  .about-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .about-image {
+    max-width: 100%;
+  }
+
+  .about-content {
+    max-width: 100%;
+  }
+
+  .about-title {
+    font-size: 28px;
+  }
+
+  .about-desc {
+    font-size: 14px;
+  }
+
+  .skill-label {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-section {
+    padding: 40px 0;
+  }
+
+  .about-title {
+    font-size: 24px;
+  }
+
+  .about-desc {
+    font-size: 12px;
+  }
+
+  .skill-label {
+    font-size: 12px;
+  }
+
+  .bar {
+    height: 15px;
+  }
+}

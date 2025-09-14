@@ -1,0 +1,15 @@
+
+@import "tailwindcss";
+/* 🌐 Кастомные стили */
+body {
+  /* @apply bg-accent text-primary font-sans; */
+  background: #F2F0EC;
+}
+
+
+.header {
+  background-color: red;
+}
+
+
+
